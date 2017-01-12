@@ -1,35 +1,29 @@
 import re
+
 import requests
-import time
 
 import config as cfg
-from parse import parse
 from command_parse import command_parse
+from parse import parse
+from logger import log_event, ask_log
 
 offset = 0
-
-
-def log_event(text):
-    event = '%s >> %s' % (time.ctime(), text)
-    f = open('log.log', 'a')
-    f.write(event+'\n')
-    print(event)
 
 
 def send(chat_id, text, reply_id=''):
     if re.findall('^is_sticker_', text):
         data = {
-                'chat_id': chat_id, 
-                'sticker': re.findall('[^is_sticker_].*', text), 
-                'reply_to_message_id': reply_id
-            }
+            'chat_id': chat_id,
+            'sticker': re.findall('[^is_sticker_].*', text),
+            'reply_to_message_id': reply_id
+        }
         request = requests.post(cfg.URL + cfg.TOKEN + '/sendSticker', data=data)
     else:
         data = {
-                'chat_id': chat_id, 
-                'text': text, 
-                'reply_to_message_id': reply_id
-            }
+            'chat_id': chat_id,
+            'text': text,
+            'reply_to_message_id': reply_id
+        }
         request = requests.post(cfg.URL + cfg.TOKEN + '/sendMessage', data=data)
     if not request.status_code == 200:
         return False
@@ -75,7 +69,7 @@ def check_updates():
             log_event('###: %s (%s): "%s"' % parameters)
 
         log_event("BOT: \"%s\"" % p_message)
-        
+
 
 if __name__ == "__main__":
     while True:
