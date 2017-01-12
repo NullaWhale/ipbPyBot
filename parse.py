@@ -56,8 +56,7 @@ def parse(message):
             "Я сейчас закричу!"
         ])
 
-    if re.search('2007(?:[мй]|ого|ому)?', message, re.IGNORECASE) or \
-            re.search('дветысячиседьмой|дветысячисемь|дветысячи седьмой|дветысячи семь', message, re.IGNORECASE):
+    if re.search('2007(?:[мй]|ого|ому)?', message, re.IGNORECASE):
         reply = random.choice([
             "Никто и никогда не вернет 2007-й год",
             "Сентяяябрь гориит",
@@ -74,12 +73,19 @@ def parse(message):
     if re.findall('^user_repos:', message, re.IGNORECASE):
         git = github.Github()
         try:
-            user = git.get_user(re.findall('[^:].*', re.findall('[^user_repos].*', message)[0])[0])
+            user = git.get_user(
+                        re.findall('[^:].*', 
+                        re.findall('[^user_repos].*', message)[0])[0]
+                    )
             for repo in user.get_repos():
                 print(repo)
-                if repo.fork: reply += "id " + str(repo.id) + ": \"" + repo.full_name + "\" (fork)\n"
-                else: reply += "id " + str(repo.id) + ": \"" + repo.full_name + "\" \n"
+                if repo.fork: 
+                    reply += "id " + str(repo.id) 
+                    + ": \"" + repo.full_name + "\" (fork)\n"
+                else: 
+                    reply += "id " + str(repo.id) + ": \"" + repo.full_name + "\" \n"
         except:
-            reply = "Чего-то ты не то ввел, дружище. Попробуй-ка по другому как-нибудь."
+            reply = "Чего-то ты не то ввел, дружище. "
+            "Попробуй-ка по другому как-нибудь."
 
     return reply
