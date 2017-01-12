@@ -11,6 +11,7 @@ TOKEN = <Bot_token_from_@BotFather> # Token to connect to your bot
 ## _Dependencies_
 
 ```bash
+pip install requests --upgrade
 pip install PyGithub --upgrade
 ```
 
