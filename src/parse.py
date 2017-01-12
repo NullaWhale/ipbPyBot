@@ -2,8 +2,6 @@ import random
 import re
 import time
 
-import github
-
 
 def parse(message):
     reply = ' '
@@ -11,20 +9,20 @@ def parse(message):
     if re.search('красота', message, re.IGNORECASE):
         reply = "Согласен, красивая картина."
 
-    if re.search('питон|python', message, re.IGNORECASE):
+    elif re.search('питон|python', message, re.IGNORECASE):
         reply = random.choice([
             "@movax0 очень любит питон",
             "Папа ^_^",
             "is_sticker_BQADAgADxCsAAktqAwABh9k43RMGQ5YC"
         ])
 
-    if re.search('^date|дата$', message, re.IGNORECASE):
+    elif re.search('^date|дата$', message, re.IGNORECASE):
         reply = time.ctime(time.time())
 
-    if re.search('^time|время$', message, re.IGNORECASE):
+    elif re.search('^time|время$', message, re.IGNORECASE):
         reply = time.ctime(time.time())
 
-    if re.search('^Капитан,|Кэп,|Куп,', message, re.IGNORECASE):
+    elif re.search('^Капитан,|Кэп,|Куп,', message, re.IGNORECASE):
         reply = random.choice([
             "Тащите пирожки",
             "Готовьте лодку!",
@@ -34,14 +32,39 @@ def parse(message):
             "Ваш корабль подан, капитан",
             "O Captain! my Captain!"
         ])
+    elif re.search('^Дувел,|Пувел,', message, re.IGNORECASE):
+        reply = random.choice([
+            "Как иголка в стоге сена",
+            "Охохохохо"
+        ])
 
-    if re.search('^добро|все|ребя', message, re.IGNORECASE):
+    elif re.search('^Мукс,', message, re.IGNORECASE):
+        reply = random.choice([
+            "Мукс — тут как тукс",
+            "Муксус-бамбуксус"
+        ])
+
+    elif re.search('^Даня,|Староста,|Даня!|Даниин,', message, re.IGNORECASE):
+        reply = random.choice([
+            "Даниила Ивановича в данный момент нет на месте. \n"
+            "Если это важно, оставьте свое сообщение с пометкой #важное",
+            "Все ищем старосту!"
+        ])
+
+    elif re.search('^Даня,|Староста,|Даня!|Даниин,', message, re.IGNORECASE):
+        reply = random.choice([
+            "Даниила Ивановича в данный момент нет на месте. \n"
+            "Если это важно, оставьте свое сообщение с пометкой #важное",
+            "Все ищем старосту!"
+        ])
+
+    elif re.search('^добро|все|ребя', message, re.IGNORECASE):
         reply = random.choice([
             "И тебе доброго утра!",
             "Добрейшего тебе предрассветного утра!"
         ])
 
-    if re.search('^ку|прив|здаров', message, re.IGNORECASE):
+    elif re.search('^ку|прив|здаров', message, re.IGNORECASE):
         reply = random.choice([
             "Здарова",
             "Привет-привет",
@@ -49,14 +72,14 @@ def parse(message):
             "Здарова, коль не шутишь"
         ])
 
-    if re.search('Бот,', message, re.IGNORECASE):
+    elif re.search('Бот,', message, re.IGNORECASE):
         reply = random.choice([
             "Сам ты бот, я человек",
             "Ну ты и мр*зь",
             "Я сейчас закричу!"
         ])
 
-    if re.search('2007(?:[мй]|ого|ому)?', message, re.IGNORECASE):
+    elif re.search('2007(?:[мй]|ого|ому)?', message, re.IGNORECASE):
         reply = random.choice([
             "Никто и никогда не вернет 2007-й год",
             "Сентяяябрь гориит",
@@ -69,23 +92,5 @@ def parse(message):
             "Остальное забыл навсегда",
             "Поцелуй из огня!"
         ])
-
-    if re.findall('^user_repos:', message, re.IGNORECASE):
-        git = github.Github()
-        try:
-            user = git.get_user(
-                        re.findall('[^:].*', 
-                        re.findall('[^user_repos].*', message)[0])[0]
-                    )
-            for repo in user.get_repos():
-                print(repo)
-                if repo.fork: 
-                    reply += "id " + str(repo.id) 
-                    + ": \"" + repo.full_name + "\" (fork)\n"
-                else: 
-                    reply += "id " + str(repo.id) + ": \"" + repo.full_name + "\" \n"
-        except:
-            reply = "Чего-то ты не то ввел, дружище. "
-            "Попробуй-ка по другому как-нибудь."
 
     return reply

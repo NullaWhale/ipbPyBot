@@ -1,5 +1,6 @@
 *.xml
 *.iml
 *.pyc
-config.py
+src/config.py
 log.log
+*.db

@@ -1,15 +1,18 @@
 import re
-
-import requests
 import time
 
-import config as cfg
+import requests
+
+from src import config as cfg
 
 
 def log_event(text):
     event = '%s >> %s' % (time.ctime(), text)
-    f = open('log.log', 'a')
-    f.write(event + '\n')
+    try:
+        f = open('log.log', 'a', encoding='utf-8')
+        f.write(event + '\n')
+    except Exception as e:
+        print("Проблемы с файлом: %s" % e)
     print(event)
 
 
