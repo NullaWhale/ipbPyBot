@@ -51,6 +51,7 @@ def check_updates():
             log_event('Unknown message: %s' % update)
             continue
 
+        chat = update['message']['chat']
         chat_id = update['message']['chat']['id']
         from_id = update['message']['from']['id']
         message_id = update['message']['message_id']
@@ -58,23 +59,17 @@ def check_updates():
         first_name = update['message']['from']['first_name']
         p_message = parse(message)
 
-        # cur.execute(
-        #    "INSERT INTO chat_msg_counter (id, chat_id, msg_count) VALUES('%s')" % message.replace('#важно', ""))
-        # cur.execute(
-        #    "INSERT INTO chat_msg_counter (id, chat_id, msg_count) VALUES('%s')" % message.replace('#важно', ""))
-        # con.commit()
-
         if re.search('^#', message, re.IGNORECASE):
-            send(chat_id, hashtag_parse(message, from_id))
-        if re.search('^/', message, re.IGNORECASE):
-            send(chat_id, command_parse(message))
+            send(chat_id, hashtag_parse(message, from_id, chat_id))
+        elif re.search('^/', message, re.IGNORECASE):
+            send(chat_id, command_parse(message, chat))
         else:
             send(chat_id, p_message, message_id)
 
         if update['message']['chat']['type'] == 'private':
-            log_event('###: %s (%s): "%s"' % (first_name, from_id, message))
+            log_event('#chat:%s#: %s (%s): "%s"' % (chat_id, first_name, from_id, message))
         else:
-            log_event('###: %s (%s): "%s"' % (first_name, from_id, message))
+            log_event('#chat:%s#: %s (%s): "%s"' % (chat_id, first_name, from_id, message))
 
         log_event("BOT: \"%s\"" % p_message)
 

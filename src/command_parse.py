@@ -3,13 +3,13 @@ import sqlite3
 import github
 
 
-def command_parse(message):
+def command_parse(message, chat):
     con = sqlite3.connect('db/main_base.db')
     cur = con.cursor()
     reply = ' '
 
     if re.search('^/important', message, re.IGNORECASE):
-        cur.execute('SELECT text FROM important')
+        cur.execute("SELECT text FROM important WHERE chat_id = %s" % chat['id'])
         row = [st[0] for st in cur.fetchall()]
         if row:
             reply = "<b>Важные новости за последнее время:</b>\n"
@@ -21,10 +21,13 @@ def command_parse(message):
     if re.search('/user_repos', message, re.IGNORECASE):
         git = github.Github()
         try:
-            if message == '/user_repos':
-                reply = "Юзернейм-то укажи мне, дурёха."
+            if message == '/user_repos' or message == '/user_repos@ipbPyBot':
+                reply = "Юзернейм-то укажи, дурёха."
             else:
-                user = git.get_user(message.replace("/user_repos ", ''))
+                user = \
+                    git.get_user(
+                        message.replace("/user_repos " if chat['type'] == 'private' else "/user_repos@ipbPyBot ", '')
+                    )
                 for repo in user.get_repos():
                     print(repo)
                     if repo.fork:

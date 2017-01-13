@@ -1,6 +1,7 @@
 import random
 import re
 import time
+import src.config as cfg
 
 
 def parse(message):
@@ -22,14 +23,13 @@ def parse(message):
     elif re.search('^time|время$', message, re.IGNORECASE):
         reply = time.ctime(time.time())
 
-    elif re.search('^Капитан,|Кэп,|Куп,', message, re.IGNORECASE):
+    elif re.search('Капитан,|Кэп,|Куп,|Пирожок,', message, re.IGNORECASE):
         reply = random.choice([
-            "Тащите пирожки",
+            "Тащи пирожки",
             "Готовьте лодку!",
-            "Капитана на борт!",
             "Капитан на борту!",
             "Лодка подана!",
-            "Ваш корабль подан, капитан",
+            "Ваш корабль подан, Капитан",
             "O Captain! my Captain!"
         ])
     elif re.search('^Дувел,|Пувел,', message, re.IGNORECASE):
@@ -38,22 +38,14 @@ def parse(message):
             "Охохохохо"
         ])
 
-    elif re.search('^Мукс,', message, re.IGNORECASE):
+    elif re.search('Мукс[аеу]?(,)?', message, re.IGNORECASE):
         reply = random.choice([
-            "Мукс — тут как тукс",
             "Муксус-бамбуксус"
         ])
 
-    elif re.search('^Даня,|Староста,|Даня!|Даниин,', message, re.IGNORECASE):
+    elif re.search('Даня,|Даниил,|Старост[ауойе]', message, re.IGNORECASE):
         reply = random.choice([
-            "Даниила Ивановича в данный момент нет на месте. \n"
-            "Если это важно, оставьте свое сообщение с пометкой #важное",
-            "Все ищем старосту!"
-        ])
-
-    elif re.search('^Даня,|Староста,|Даня!|Даниин,', message, re.IGNORECASE):
-        reply = random.choice([
-            "Даниила Ивановича в данный момент нет на месте. \n"
+            cfg.ADMIN_NAME + " в данный момент отсутствует. \n"
             "Если это важно, оставьте свое сообщение с пометкой #важное",
             "Все ищем старосту!"
         ])
