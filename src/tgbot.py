@@ -3,12 +3,13 @@ import re
 import src.config as cfg
 import requests
 from src.command_parse import command_parse
-from src.logger import log_event
+from src.logger import log_event, ask_log
 from src.parse import parse
 
 from src.hashtag_parse import hashtag_parse
 
 offset = 0
+message_counter = 0
 
 
 def send(chat_id, text, reply_id=''):
@@ -47,6 +48,10 @@ def check_updates():
 
     for update in request.json()['result']:
         offset = update['update_id']
+
+        if 'message' in update and 'new_chat_member' in update['message']:
+            send(update['message']['chat']['id'], "En taro " + update['message']['new_chat_member']['first_name'])
+
         if 'message' not in update or 'text' not in update['message']:
             log_event('Unknown message: %s' % update)
             continue
@@ -58,6 +63,8 @@ def check_updates():
         message = update['message']['text']
         first_name = update['message']['from']['first_name']
         p_message = parse(message)
+
+        if from_id is cfg.CREATOR: ask_log(update['message'])
 
         if re.search('^#', message, re.IGNORECASE):
             send(chat_id, hashtag_parse(message, from_id, chat_id))

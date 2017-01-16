@@ -23,7 +23,7 @@ def parse(message):
     elif re.search('^time|время$', message, re.IGNORECASE):
         reply = time.ctime(time.time())
 
-    elif re.search('Капитан,|Кэп,|Куп,|Пирожок,', message, re.IGNORECASE):
+    elif re.search('Капитан|Кэп,|Куп,|Пирожок', message, re.IGNORECASE):
         reply = random.choice([
             "Тащи пирожки",
             "Готовьте лодку!",
@@ -32,7 +32,7 @@ def parse(message):
             "Ваш корабль подан, Капитан",
             "O Captain! my Captain!"
         ])
-    elif re.search('^Дувел,|Пувел,', message, re.IGNORECASE):
+    elif re.search('Дувел|Пувел', message, re.IGNORECASE):
         reply = random.choice([
             "Как иголка в стоге сена",
             "Охохохохо"
@@ -50,15 +50,15 @@ def parse(message):
             "Все ищем старосту!"
         ])
 
-    elif re.search('^добро|все|ребя', message, re.IGNORECASE):
+    elif re.search('^(всем\s)?добр(ое|ого) утр[ао]', message, re.IGNORECASE):
         reply = random.choice([
             "И тебе доброго утра!",
             "Добрейшего тебе предрассветного утра!"
         ])
 
-    elif re.search('^ку|прив|здаров', message, re.IGNORECASE):
+    elif re.search('здаров|прив[ет]?]', message, re.IGNORECASE):
         reply = random.choice([
-            "Здарова",
+            "Здарова ✌",
             "Привет-привет",
             "Ну здравствуй, проходи, не стой на пороге",
             "Здарова, коль не шутишь"
@@ -67,9 +67,25 @@ def parse(message):
     elif re.search('Бот,', message, re.IGNORECASE):
         reply = random.choice([
             "Сам ты бот, я человек",
-            "Ну ты и мр*зь",
-            "Я сейчас закричу!"
+            "Я сейчас закричу!",
+            "Смею возразить!",
+            "Житие мое",
+            "Just...Leave me alone",
+            "Talk with my hand ✋",
+            "Ты нарываешься",
+            "Хозяин, меня тут обижают!",
+            "@nicl_21, спаси!"
         ])
+
+    elif re.search('Костян', message, re.IGNORECASE):
+        reply = random.choice([
+            "Ты имел в виду Макса Ершова?"
+        ])
+
+    elif re.search('ping', message, re.IGNORECASE):
+        reply = "PONG"
+    elif re.search('пинг', message, re.IGNORECASE):
+        reply = "ПОНГ"
 
     elif re.search('2007(?:[мй]|ого|ому)?', message, re.IGNORECASE):
         reply = random.choice([

@@ -16,7 +16,7 @@ def command_parse(message, chat):
             for item in row:
                 reply += "—<i>" + item + "</i>\n"
         else:
-            reply = "<b>Давно ничего важного небыло</b>"
+            reply = "<b>Давно ничего важного не было</b>"
 
     if re.search('/user_repos', message, re.IGNORECASE):
         git = github.Github()
